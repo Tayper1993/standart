@@ -1,14 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <h1>Users</h1>
+    <h1>Пользователи</h1>
     <a href="{{ url_for('create_user') }}" class="btn btn-primary">Create User</a>
     <table class="table">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Username</th>
-            <th>Actions</th>
+            <th>Логин</th>
+            <th>Действие</th>
         </tr>
         </thead>
         <tbody>
@@ -17,8 +17,8 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>
-                    <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-warning">Edit</a>
-                    <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger">Delete</a>
+                    <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-warning">Редактировать</a>
+                    <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger">Удалить</a>
                 </td>
             </tr>
         {% endfor %}

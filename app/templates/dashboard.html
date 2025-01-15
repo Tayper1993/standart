@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <h1>Dashboard</h1>
+    <h1>Дашборд</h1>
     <div class="row">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Users</h5>
+                    <h5 class="card-title">Общее количество пользователей</h5>
                     <p class="card-text">{{ total_users }}</p>
                 </div>
             </div>
@@ -14,7 +14,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Transactions</h5>
+                    <h5 class="card-title">Общее количество транзакций</h5>
                     <p class="card-text">{{ total_transactions }}</p>
                 </div>
             </div>
@@ -22,20 +22,20 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Amount Today</h5>
+                    <h5 class="card-title">Общее количество сегодня</h5>
                     <p class="card-text">{{ total_amount_today }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <h2>Recent Transactions</h2>
+    <h2>Недавние транзакции</h2>
     <table class="table">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Amount</th>
-            <th>Status</th>
+            <th>Сумма</th>
+            <th>Статус</th>
         </tr>
         </thead>
         <tbody>
