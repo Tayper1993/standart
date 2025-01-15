@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Transactions</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.status }}</td>
+                <td>
+                    <a href="{{ url_for('view_transaction', transaction_id=transaction.id) }}"
+                       class="btn btn-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

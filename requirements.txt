@@ -1,8 +1,10 @@
-flask
+flask~=3.1.0
 python-dotenv
 flask-wtf
 flask-sqlalchemy
-flask-migrate
+flask-migrate~=4.1.0
 flask-login
 email-validator
-SQLAlchemy
+SQLAlchemy~=2.0.37
+WTForms~=3.2.1
+Werkzeug~=3.1.3

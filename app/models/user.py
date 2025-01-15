@@ -1,14 +1,8 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
-STATUSES = {
-    'Ожидание': 'Ожидание',
-    'Подтверждена': 'Подтверждена',
-    'Отменена': 'Отменена',
-    'Истекла': 'Истекла',
-}
+from app import db
 
 
 class User(db.Model):
@@ -28,14 +22,3 @@ class User(db.Model):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
-
-
-class Transaction(db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True, comment='Идентификатор')
-    amount: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False, comment='Сумма')
-    commission: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False, comment='Комиссия')
-    status: so.Mapped[str] = so.mapped_column(
-        sa.String(12), default='Ожидание', server_default='Ожидание', comment='Статус')
-
-    def __repr__(self):
-        return f'<Transaction: {self.id}, Amount: {self.amount}, Status: {self.status}>'
