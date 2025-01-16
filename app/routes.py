@@ -23,25 +23,28 @@ def dashboard():
 
 @app.route('/users')
 def users():
-    users = User.query.all()
-    return render_template('users.html', users=users)
+    all_users = User.query.all()
+    return render_template('users.html', users=all_users)
 
 
 @app.route('/transactions')
 def transactions():
-    transactions = Transaction.query.all()
-    return render_template('transactions.html', transactions=transactions)
+    all_transactions = Transaction.query.all()
+    return render_template('transactions.html', transactions=all_transactions)
 
 
 @app.route('/user/create', methods=['GET', 'POST'])
 def create_user():
     form = UserForm()
     if form.validate_on_submit():
-        new_user = User(username=form.username.data)
+        new_user = User(
+            username=form.username.data,
+            webhook_url=form.webhook_url.data,
+        )
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
-        flash('User created successfully.')
+        flash('Пользователь создан')
         return redirect(url_for('users'))
     return render_template('create_user.html', form=form)
 
@@ -50,16 +53,16 @@ def create_user():
 def edit_user(user_id):
     user = User.query.get(user_id)
     if not user:
-        flash('User not found.')
+        flash('Пользователь не найден')
         return redirect(url_for('users'))
 
     if request.method == 'POST':
         user.username = request.form['username']
-        user.email = request.form['email']
+        user.email = request.form['webhook_url']
         if request.form['password']:
-            user.set_password(request.form['password'])  # Обновляем пароль, если он указан
+            user.set_password(request.form['password'])
         db.session.commit()
-        flash('User updated successfully.')
+        flash('Данные успешно обновлены')
         return redirect(url_for('users'))
 
     return render_template('edit_user.html', user=user)
@@ -71,9 +74,9 @@ def delete_user(user_id):
     if user:
         db.session.delete(user)
         db.session.commit()
-        flash('User deleted successfully.')
+        flash('Пользователь успешно удалён.')
     else:
-        flash('User not found.')
+        flash('Пользователь не найден')
     return redirect(url_for('users'))
 
 
@@ -95,3 +98,5 @@ def view_transaction(transaction_id):
         return redirect(url_for('transactions'))
 
     return render_template('view_transaction.html', transaction=transaction)
+
+

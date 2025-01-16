@@ -1,20 +1,20 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <h1>Edit User</h1>
+    <h1>Редактировать пользователя</h1>
     <form method="POST">
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Логин</label>
             <input type="text" class="form-control" name="username" value="{{ user.username }}" required>
         </div>
         <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+            <label for="email">Webhook url</label>
+            <input type="text" class="form-control" name="webhook_url" value="{{ user.webhook_url }}" required>
         </div>
         <div class="form-group">
-            <label for="password">Password (leave blank to keep current)</label>
+            <label for="password">Пароль (Необязательно)</label>
             <input type="password" class="form-control" name="password">
         </div>
-        <button type="submit" class="btn btn-primary">Update User</button>
+        <button type="submit" class="btn btn-primary">Редактировать</button>
     </form>
 {% endblock %}
