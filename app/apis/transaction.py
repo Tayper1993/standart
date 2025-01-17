@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 
 from app import app, db
+from app.forms import TransactionForm
 from app.models.transaction import Transaction
 
 
@@ -28,3 +29,19 @@ def view_transaction(transaction_id):
             flash('Транзакция не может быть обновлена, поскольку она не находится в состоянии "Ожидание"')
 
     return render_template('view_transaction.html', transaction=transaction)
+
+
+@app.route('/transaction/create', methods=['GET', 'POST'])
+def create_transaction():
+    form = TransactionForm()
+    if form.validate_on_submit():
+        new_transaction = Transaction(
+            amount=form.amount.data,
+            commission=form.commission.data,
+            status=form.status.data,
+        )
+        db.session.add(new_transaction)
+        db.session.commit()
+        flash('Транзакция создана')
+        return redirect(url_for('transactions'))
+    return render_template('transaction_create.html', form=form)

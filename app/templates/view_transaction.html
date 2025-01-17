@@ -4,7 +4,9 @@
     <h1>Детали транзакции</h1>
     <p>ID: {{ transaction.id }}</p>
     <p>Сумма: {{ transaction.amount }}</p>
+    <p>Комиссия: {{ transaction.commission }}</p>
     <p>Статус: {{ transaction.status }}</p>
+    <p>Время создания: {{ transaction.create_at }}</p>
 
     <form method="POST">
         <div class="form-group">
