@@ -10,6 +10,47 @@ from app.models.user import User
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
+    """
+    Получает информацию для панели управления.
+
+    ---
+    responses:
+      200:
+        description: Успешный ответ с данными для панели управления.
+        schema:
+          type: object
+          properties:
+            total_users:
+              type: integer
+              description: Общее количество пользователей.
+            total_transactions:
+              type: integer
+              description: Общее количество транзакций.
+            total_amount_today:
+              type: number
+              description: Общая сумма транзакций за сегодня.
+            recent_transactions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Идентификатор транзакции.
+                  amount:
+                    type: number
+                    description: Сумма транзакции.
+                  commission:
+                    type: number
+                    description: Комиссия в процентах.
+                  status:
+                    type: string
+                    description: Статус транзакции.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Дата и время создания транзакции.
+    """
     total_users = User.query.count()
     total_transactions = Transaction.query.count()
     total_amount_today = db.session.query(db.func.sum(Transaction.amount)).filter(
