@@ -84,19 +84,20 @@ def delete_user(user_id):
 def view_transaction(transaction_id):
     transaction = Transaction.query.get(transaction_id)
     if not transaction:
-        flash('Transaction not found.')
-        return redirect(url_for('transactions'))
+        flash('Транзакция не найдена')
+        return redirect(url_for('list_transactions'))
 
     if request.method == 'POST':
         new_status = request.form.get('status')
-        if transaction.status == 'pending':
+
+        if transaction.status == 'Wait' and new_status in ['Confirmed', 'Cancelled']:
             transaction.status = new_status
+            print(new_status)
+            # db.session.add(new_status)
             db.session.commit()
-            flash('Transaction status updated successfully.')
+            flash('Статус транзакции успешно обновлен')
+            return redirect(url_for('view_transaction', transaction_id=transaction.id))
         else:
-            flash('Transaction cannot be updated.')
-        return redirect(url_for('transactions'))
+            flash('Транзакция не может быть обновлена, поскольку она не находится в состоянии "Ожидание"')
 
     return render_template('view_transaction.html', transaction=transaction)
-
-

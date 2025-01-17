@@ -1,16 +1,11 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy import DateTime
 
 from app import db
-
-STATUSES = {
-    'Ожидание': 'Ожидание',
-    'Подтверждена': 'Подтверждена',
-    'Отменена': 'Отменена',
-    'Истекла': 'Истекла',
-}
+from app.models.custom_choice import ChoiceType
 
 
 class Transaction(db.Model):
@@ -18,9 +13,11 @@ class Transaction(db.Model):
     amount: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False, comment='Сумма')
     commission: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False, comment='Комиссия')
     status: so.Mapped[str] = so.mapped_column(
-        sa.String(12), default='Ожидание', server_default='Ожидание', comment='Статус')
-    created_at: so.Mapped[datetime] = so.mapped_column(
-        default=lambda: datetime.now(timezone.utc), comment='Дата и время создания')
+        ChoiceType({"Wait": "Ожидание", "Confirmed": "Подтверждено", "Cancelled": "Отменена", "Expired": "Истекла"}),
+        comment='Статус'
+    )
+
+    created_at = db.Column(DateTime, default=datetime.utcnow, comment='Время создания')
 
     def __repr__(self):
-        return f'<Transaction: {self.id}, Amount: {self.amount}, Status: {self.status}, Created At: {self.created_at}>'
+        return f'<Transaction: {self.id}, Amount: {self.amount}, Status: {self.status}>'

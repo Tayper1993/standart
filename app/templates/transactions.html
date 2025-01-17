@@ -7,8 +7,8 @@
         <tr>
             <th>ID</th>
             <th>Сумма</th>
+            <th>Комиссия</th>
             <th>Статус</th>
-            <th>Действие</th>
         </tr>
         </thead>
         <tbody>
@@ -16,6 +16,7 @@
             <tr>
                 <td>{{ transaction.id }}</td>
                 <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.commission }}</td>
                 <td>{{ transaction.status }}</td>
                 <td>
                     <a href="{{ url_for('view_transaction', transaction_id=transaction.id) }}"

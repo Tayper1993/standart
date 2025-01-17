@@ -8,3 +8,4 @@ email-validator
 SQLAlchemy~=2.0.37
 WTForms~=3.2.1
 Werkzeug~=3.1.3
+alembic~=1.14.0
