@@ -36,7 +36,7 @@ def create_transaction():
     form = TransactionForm()
     if form.validate_on_submit():
         new_transaction = Transaction(
-            amount=form.amount.data,
+            amount=round(form.amount.data * (1 + form.commission.data / 100), 2),
             commission=form.commission.data,
             status=form.status.data,
         )
