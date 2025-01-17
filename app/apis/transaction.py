@@ -45,3 +45,17 @@ def create_transaction():
         flash('Транзакция создана')
         return redirect(url_for('transactions'))
     return render_template('transaction_create.html', form=form)
+
+
+@app.route('/transaction/cancel/<int:transaction_id>', methods=['POST'])
+def cancel_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    if not transaction:
+        flash('Транзакция не найдена')
+        return redirect(url_for('list_transactions'))
+
+    transaction.status = 'Cancelled'
+    db.session.commit()
+    flash('Статус транзакции успешно обновлен на "Отменена"')
+
+    return redirect(url_for('transactions'))
