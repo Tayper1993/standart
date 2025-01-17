@@ -2,12 +2,22 @@
 
 {% block content %}
     <h1>Дашборд</h1>
+
+    <label for="refresh-interval">Интервал обновления (в секундах):</label>
+    <select id="refresh-interval">
+        <option value="0">Отключить</option>
+        <option value="10">10 секунд</option>
+        <option value="15">15 секунд</option>
+        <option value="30">30 секунд</option>
+        <option value="60">1 минута</option>
+    </select>
+
     <div class="row">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Общее количество пользователей</h5>
-                    <p class="card-text">{{ total_users }}</p>
+                    <p class="card-text" id="total-users">{{ total_users }}</p>
                 </div>
             </div>
         </div>
@@ -15,7 +25,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Общее количество транзакций</h5>
-                    <p class="card-text">{{ total_transactions }}</p>
+                    <p class="card-text" id="total-transactions">{{ total_transactions }}</p>
                 </div>
             </div>
         </div>
@@ -23,14 +33,14 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Общее количество сегодня</h5>
-                    <p class="card-text">{{ total_amount_today }}</p>
+                    <p class="card-text" id="total-amount-today">{{ total_amount_today }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <h2>Недавние транзакции</h2>
-    <table class="table">
+    <table class="table" id="recent-transactions-table">
         <thead>
         <tr>
             <th>ID</th>
@@ -48,4 +58,39 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        let intervalId;
+        const refreshIntervalSelect = document.getElementById('refresh-interval');
+
+        function fetchData() {
+            fetch('/dashboard/data') // Замените на ваш URL для получения данных
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total-users').innerText = data.total_users;
+                    document.getElementById('total-transactions').innerText = data.total_transactions;
+                    document.getElementById('total-amount-today').innerText = data.total_amount_today;
+
+                    const tbody = document.getElementById('recent-transactions-table').getElementsByTagName('tbody')[0];
+                    tbody.innerHTML = ''; // Очистить текущие данные
+                    data.recent_transactions.forEach(transaction => {
+                        const row = tbody.insertRow();
+                        row.insertCell(0).innerText = transaction.id;
+                        row.insertCell(1).innerText = transaction.amount;
+                        row.insertCell(2).innerText = transaction.status;
+                    });
+                });
+        }
+
+        function startAutoRefresh() {
+            clearInterval(intervalId);
+            const interval = parseInt(refreshIntervalSelect.value) * 1000;
+            if (interval > 0) {
+                intervalId = setInterval(fetchData, interval);
+            }
+        }
+
+        refreshIntervalSelect.addEventListener('change', startAutoRefresh);
+        startAutoRefresh();
+    </script>
 {% endblock %}
