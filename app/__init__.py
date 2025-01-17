@@ -13,4 +13,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app.models import transaction, user
-from app import routes
+from app.apis import dashboard, transaction, user
