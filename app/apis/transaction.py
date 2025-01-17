@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 
 from app import app, db
 from app.forms import TransactionForm
@@ -59,3 +59,12 @@ def cancel_transaction(transaction_id):
     flash('Статус транзакции успешно обновлен на "Отменена"')
 
     return redirect(url_for('transactions'))
+
+
+@app.route('/transaction/status/<int:transaction_id>', methods=['GET'])
+def check_transaction_status(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    if not transaction:
+        return jsonify({'error': 'Транзакция не найдена'}), 404
+
+    return jsonify({'id': transaction.id, 'status': transaction.status}), 200

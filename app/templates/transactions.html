@@ -23,15 +23,31 @@
                 <td>
                     <a href="{{ url_for('view_transaction', transaction_id=transaction.id) }}"
                        class="btn btn-info">Подробнее</a>
-                    <form action="{{ url_for('cancel_transaction', transaction_id=transaction.id) }}" method="POST"
-                          style="display:inline;">
-                        <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Вы уверены, что хотите отменить эту транзакцию?');">Отменить
-                        </button>
+                    <form action="{{ url_for('cancel_transaction', transaction_id=transaction.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите отменить эту транзакцию?');">Отменить</button>
                     </form>
+                    <button class="btn btn-secondary" onclick="checkStatus({{ transaction.id }})">Проверить статус</button>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function checkStatus(transactionId) {
+            fetch(`/transaction/status/${transactionId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Транзакция не найдена');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(`Статус транзакции ${data.id}: ${data.status}`);
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        }
+    </script>
 {% endblock %}
