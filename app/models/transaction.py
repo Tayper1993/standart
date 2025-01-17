@@ -13,7 +13,7 @@ class Transaction(db.Model):
     amount: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False, comment='Сумма')
     commission: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False, comment='Комиссия')
     status: so.Mapped[str] = so.mapped_column(
-        ChoiceType({"Wait": "Ожидание", "Confirmed": "Подтверждено", "Cancelled": "Отменена", "Expired": "Истекла"}),
+        ChoiceType({"Wait": "Wait", "Confirmed": "Confirmed", "Cancelled": "Cancelled", "Expired": "Expired"}),
         comment='Статус'
     )
 

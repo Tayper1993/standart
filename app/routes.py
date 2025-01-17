@@ -89,14 +89,11 @@ def view_transaction(transaction_id):
 
     if request.method == 'POST':
         new_status = request.form.get('status')
-
-        if transaction.status == 'Wait' and new_status in ['Confirmed', 'Cancelled']:
+        if transaction.status == 'Wait':
             transaction.status = new_status
-            print(new_status)
-            # db.session.add(new_status)
             db.session.commit()
             flash('Статус транзакции успешно обновлен')
-            return redirect(url_for('view_transaction', transaction_id=transaction.id))
+            return redirect(url_for('transactions'))
         else:
             flash('Транзакция не может быть обновлена, поскольку она не находится в состоянии "Ожидание"')
 
