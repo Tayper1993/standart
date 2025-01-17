@@ -123,7 +123,7 @@ def edit_user(user_id):
     return render_template('edit_user.html', user=user)
 
 
-@app.route('/user/delete/<int:user_id>', methods=['POST'])
+@app.route('/user/delete/<int:user_id>', methods=['GET', 'DELETE'])
 def delete_user(user_id):
     """
     Удаляет пользователя по его идентификатору.
