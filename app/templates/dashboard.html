@@ -64,7 +64,7 @@
         const refreshIntervalSelect = document.getElementById('refresh-interval');
 
         function fetchData() {
-            fetch('/dashboard/data') // Замените на ваш URL для получения данных
+            fetch('/dashboard/data')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('total-users').innerText = data.total_users;
@@ -72,7 +72,7 @@
                     document.getElementById('total-amount-today').innerText = data.total_amount_today;
 
                     const tbody = document.getElementById('recent-transactions-table').getElementsByTagName('tbody')[0];
-                    tbody.innerHTML = ''; // Очистить текущие данные
+                    tbody.innerHTML = '';
                     data.recent_transactions.forEach(transaction => {
                         const row = tbody.insertRow();
                         row.insertCell(0).innerText = transaction.id;

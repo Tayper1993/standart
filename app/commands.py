@@ -1,6 +1,7 @@
 from flask import Blueprint
 from sqlalchemy import true
 
+
 usersbp = Blueprint('users', __name__)
 
 
@@ -12,10 +13,16 @@ def create_admin() -> str:
     from app import db
     from app.models.user import User
 
-    admin = User(username="admin", password_hash="admin", balance="1000.0", commission_rate='0.05',
-                 webhook_url='https://example.com/', is_superuser=True)
+    admin = User(
+        username='admin',
+        password_hash='admin',
+        balance='1000.0',
+        commission_rate='0.05',
+        webhook_url='https://example.com/',
+        is_superuser=True,
+    )
 
-    existing_admin = User.query.filter_by(username="admin", is_superuser=true()).first()
+    existing_admin = User.query.filter_by(username='admin', is_superuser=true()).first()
     if existing_admin:
         return 'Стандартный администратор уже существует!'
 

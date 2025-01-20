@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import flash, jsonify, redirect, render_template, request, url_for
 
 from app import app, db
 from app.forms import TransactionForm

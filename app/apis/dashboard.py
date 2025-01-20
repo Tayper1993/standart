@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, jsonify
+from flask import jsonify, render_template
 
 from app import app, db
 from app.models.transaction import Transaction
@@ -53,9 +53,12 @@ def dashboard():
     """
     total_users = User.query.count()
     total_transactions = Transaction.query.count()
-    total_amount_today = db.session.query(db.func.sum(Transaction.amount)).filter(
-        db.func.date(Transaction.created_at) == datetime.today().date()
-    ).scalar() or 0
+    total_amount_today = (
+        db.session.query(db.func.sum(Transaction.amount))
+        .filter(db.func.date(Transaction.created_at) == datetime.today().date())
+        .scalar()
+        or 0
+    )
     recent_transactions = Transaction.query.order_by(Transaction.created_at.desc()).limit(5).all()
 
     return render_template(
@@ -66,13 +69,17 @@ def dashboard():
         recent_transactions=recent_transactions,
     )
 
+
 @app.route('/dashboard/data')
 def dashboard_data():
     total_users = User.query.count()
     total_transactions = Transaction.query.count()
-    total_amount_today = db.session.query(db.func.sum(Transaction.amount)).filter(
-        db.func.date(Transaction.created_at) == datetime.today().date()
-    ).scalar() or 0
+    total_amount_today = (
+        db.session.query(db.func.sum(Transaction.amount))
+        .filter(db.func.date(Transaction.created_at) == datetime.today().date())
+        .scalar()
+        or 0
+    )
     recent_transactions = Transaction.query.order_by(Transaction.created_at.desc()).limit(5).all()
 
     transactions_data = [
@@ -86,10 +93,11 @@ def dashboard_data():
         for transaction in recent_transactions
     ]
 
-    return jsonify({
-        'total_users': total_users,
-        'total_transactions': total_transactions,
-        'total_amount_today': total_amount_today,
-        'recent_transactions': transactions_data,
-    })
-
+    return jsonify(
+        {
+            'total_users': total_users,
+            'total_transactions': total_transactions,
+            'total_amount_today': total_amount_today,
+            'recent_transactions': transactions_data,
+        }
+    )
